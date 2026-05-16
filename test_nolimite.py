@@ -151,6 +151,8 @@ def align_slave_to_master(slave_dashboard, slave_move, master_joints, slave_join
 def connect_robot(ip):
     dashboard = DobotApiDashboard(ip, DASHBOARD_PORT)
     move = DobotApiMove(ip, MOVE_PORT)
+    dashboard.log = lambda _text: None
+    move.log = lambda _text: None
     return dashboard, move
 
 
@@ -163,11 +165,6 @@ def main():
     print("Connected")
 
     try:
-        print("Clearing alarms and enabling arms...")
-        master_dashboard.ClearError()
-        master_dashboard.EnableRobot()
-        slave_dashboard.ClearError()
-        slave_dashboard.EnableRobot()
         slave_dashboard.SpeedFactor(FOLLOW_SPEED)
 
         master_start = get_angle(master_dashboard)
